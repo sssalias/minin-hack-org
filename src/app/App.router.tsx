@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
+import { OrgPage } from 'src/pages/org-page'
 
 interface IRoute {
     path: string
@@ -6,7 +7,10 @@ interface IRoute {
 }
 
 const RouterData: IRoute[] = [
-
+    {
+        path: '/',
+        page: <OrgPage/>
+    }
 ]
 
 const AppRouter: React.FC = () => {
