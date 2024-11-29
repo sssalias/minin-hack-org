@@ -1,0 +1,20 @@
+name: "frontend-org"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`org.kowlad.ru`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=leresolver"
+    networks:
+      - traefik
+    restart: unless-stopped
+
+networks:
+  traefik:
+    external: true
