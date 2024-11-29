@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`org.kowlad.ru`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls=true"
-      - "traefik.http.routers.frontend.tls.certresolver=leresolver"
+      - "traefik.http.routers.frontend-org.rule=Host(`org.kowlad.ru`)"
+      - "traefik.http.routers.frontend-org.entrypoints=websecure"
+      - "traefik.http.routers.frontend-org.tls=true"
+      - "traefik.http.routers.frontend-org.tls.certresolver=leresolver"
     networks:
       - traefik
     restart: unless-stopped
