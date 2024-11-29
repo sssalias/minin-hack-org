@@ -8,7 +8,7 @@ const MainLayout: React.FC<Props> = props => {
     return (
         <div>
             <SideBar/>
-            <main className='ml-[275px] py-10 flex flex-col gap-4'>
+            <main className='ml-[275px] py-10 flex flex-col gap-4 pr-10'>
                 <h1 className='text-2xl font-semibold'>{props.title}</h1>
                 {props.children}
             </main>

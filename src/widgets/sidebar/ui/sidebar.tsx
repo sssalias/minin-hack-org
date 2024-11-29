@@ -1,5 +1,5 @@
 import { useSideStore } from 'src/store'
-import { FaArrowLeft, FaArrowRight, FaBook } from 'react-icons/fa'
+import { FaArrowLeft, FaArrowRight, FaBook, FaNewspaper } from 'react-icons/fa'
 import clsx from 'clsx'
 import {RiLogoutBoxFill} from 'react-icons/ri'
 import { Link } from '@nextui-org/react'
@@ -9,7 +9,11 @@ const navigation = [
         route: '/',
         label: 'Организации',
         icon: <FaBook/>
-
+    },
+    {
+        route: '/news',
+        label: 'Новости',
+        icon: <FaNewspaper/>
     }
 ]
 
@@ -20,7 +24,7 @@ const SideBar: React.FC = () => {
     return (
         <aside className={clsx('fixed h-full z-[15] shadow-md bg-white transition-all',isOpen ? 'w-[250px]' : 'w-[75px]')}>
             <div className='w-3/4 h-full mx-auto'>
-                <div className='py-3 flex flex-col justify-between items-center'>
+                <div className='py-3 flex flex-col justify-between items-center h-full'>
                     {/* brand */}
                     <div className='pb-3'>
                         {/* logo */}

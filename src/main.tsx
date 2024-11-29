@@ -4,13 +4,16 @@ import App from 'src/app/App'
 
 import {NextUIProvider} from '@nextui-org/react'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from 'src/features/auth'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <NextUIProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </NextUIProvider>
-  </StrictMode>,
+  <AuthProvider>
+    <StrictMode>
+      <NextUIProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </NextUIProvider>
+    </StrictMode>
+  </AuthProvider>
 )

@@ -1,22 +1,22 @@
 import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from '@nextui-org/react'
-import OrgCreateForm from 'src/entities/org/ui/org-create-form'
+import NewsCreateForm from 'src/entities/news/ui/news-create-form'
 
-const OrgCreate: React.FC = () => {
+const NewsCreate: React.FC = () => {
 
     const modal = useDisclosure()
 
     return (
         <>
-            <Button className='ml-auto' onClick={modal.onOpen} color='primary'>Добавить организацию</Button>
+            <Button className='ml-auto' onClick={modal.onOpen} color='primary'>Добавить новость</Button>
             <Modal isOpen={modal.isOpen} onOpenChange={modal.onOpenChange}>
                 <ModalContent>
-                    <ModalHeader>Создать организацию</ModalHeader>
+                    <ModalHeader>Создать новость</ModalHeader>
                     <ModalBody>
-                        <OrgCreateForm onClose={modal.onClose}/>
+                        <NewsCreateForm onClose={modal.onClose}/>
                     </ModalBody>
                 </ModalContent>
             </Modal>
         </>
     )
 }
-export default OrgCreate
+export default NewsCreate

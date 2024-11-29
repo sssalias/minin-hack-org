@@ -1,22 +1,24 @@
 import { useKeycloak } from '@react-keycloak/web'
 import { useEffect } from 'react'
+import { getNews } from 'src/entities/news/api/getNews'
 import { getOrg } from 'src/entities/org/api/getOrg'
 import { MainLayout } from 'src/layouts/main-layout'
-import { OrgList } from 'src/widgets/org-list'
+import { NewsList } from 'src/widgets/news-list'
 
-const OrgPage: React.FC = () => {
+const NewsPage: React.FC = () => {
 
 
     const {keycloak} = useKeycloak()
 
     useEffect(() => {
         getOrg(keycloak.token)
-    }, [keycloak.token])
+        getNews()
+    }, [])
 
     return (
-        <MainLayout title='Организации'>
-            <OrgList/>
+        <MainLayout title='Новости'>
+            <NewsList/>
         </MainLayout>
     )
 }
-export default OrgPage
+export default NewsPage

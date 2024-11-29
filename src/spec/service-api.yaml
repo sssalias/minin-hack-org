@@ -1,0 +1,471 @@
+openapi: 3.0.0
+info:
+  title: MininCode API
+  description: API для работы с организациями на платформе "MininCode"
+  version: 1.0.0
+
+tags:
+  - name: Organizations
+    description: Управление организациями
+  - name: News
+    description: Управление новостями
+
+paths:
+  /organizations/user:
+    get:
+      tags:
+        - Organizations
+      summary: Получить список всех организаций для пользователя
+      operationId: GetAllOrganizationsForUser
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+  /organizations:
+    get:
+      tags:
+        - Organizations
+      summary: Получить список всех организаций
+      operationId: GetAllOrganizations
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+
+    post:
+      tags:
+        - Organizations
+      summary: Добавить новую организацию
+      operationId: AddNewOrganization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganizationCreate"
+      responses:
+        '201':
+          description: Организация успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+  /organizations/{id}:
+    get:
+      tags:
+        - Organizations
+      summary: Получить информацию об организации по ID
+      operationId: GetOrganizationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор организации
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+
+    put:
+      tags:
+        - Organizations
+      summary: Обновить информацию об организации
+      operationId: UpdateOrganization
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор организации
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganizationUpdate"
+      responses:
+        '200':
+          description: Информация об организации успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+
+    delete:
+      tags:
+        - Organizations
+      summary: Удалить организацию
+      operationId: DeleteOrganization
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор организации
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Организация успешно удалена
+  /organizations/moderation/reject:
+    post:
+      tags:
+        - Organizations
+      summary: Отклонить организацию
+      operationId: RejectOrganization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModerationReject"
+      responses:
+        '200':
+          description: Организация успешно отклонена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+  /organizations/moderation/approve:
+    post:
+      tags:
+        - Organizations
+      summary: Одобрить организацю
+      operationId: ApproveOrganization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModerationApprove"
+      responses:
+        '200':
+          description: Организация успешно принята
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+  /organizations/status:
+    get:
+      tags:
+        - Organizations
+      summary: Получить организации по типу верификации
+      operationId: GetOrganizationByStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetOrganizationsByStatus"
+      responses:
+        '200':
+          description: Организация успешно принята
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+
+  /news:
+    get:
+      tags:
+        - News
+      summary: GetAllNews
+      operationId: GetAllNews
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/News"
+    post:
+      tags:
+        - News
+      summary: CreateNews
+      operationId: CreateNews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNews"
+      responses:
+        '200':
+          description: Успешный запрос
+  /news/{id}:
+    get:
+      tags:
+        - News
+      summary: GetAllNewsById
+      operationId: GetNewsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор новости
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/News"
+
+
+components:
+  schemas:
+    CreateNews:
+      type: object
+      properties:
+        media:
+          type: array
+          items:
+            type: string
+            format: uuid
+            description: "Идентификатор медиа файла в формате UUID"
+          description: "Список медиа файлов"
+        title:
+          type: string
+          description: Заголовок новости
+        description:
+          type: string
+          description: Полное описание новости
+        organization_id:
+          type: string
+          format: uuid
+          description: Id организации, которая выпустила пост
+      required:
+        - media
+        - title
+        - description
+        - organization_id
+    News:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id новости
+        media:
+          type: array
+          items:
+            type: string
+            format: uuid
+            description: "Идентификатор медиа файла в формате UUID"
+          description: "Список медиа файлов"
+        publish_data:
+          type: string
+          format: date
+          description: Дата публикации
+        title:
+          type: string
+          description: Заголовок новости
+        description:
+          type: string
+          description: Полное описание новости
+        organization_id:
+          type: string
+          format: uuid
+          description: Id организации, которая выпустила пост
+      required:
+        - id
+        - media
+        - publish_data
+        - title
+        - description
+        - organization_id
+    GetOrganizationsByStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор организации
+        owner_id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор организации
+        photo_id:
+          type: string
+          format: uuid
+          description: ID фотографии
+          nullable: true
+        title:
+          type: string
+          description: Название организации
+        description:
+          type: string
+          description: Подробное описание организации
+        phone:
+          type: string
+          format: phone
+          description: Контактный телефон
+          example: "+7-920-667-19-79"
+        email:
+          type: string
+          format: email
+          description: Электронная почта
+          example: org@example.com
+        latitude:
+          type: number
+          format: float
+          description: Географическая широта
+          example: 56.3269
+        longitude:
+          type: number
+          format: float
+          description: Географическая долгота
+          example: 44.0075
+        status:
+          type: string
+          enum: [ pending, approved, rejected ]
+          description: Статус организации
+          example: pending
+      required:
+        - id
+        - photo_id
+        - title
+        - description
+        - phone
+        - email
+        - latitude
+        - longitude
+        - status
+    OrganizationCreate:
+      type: object
+      properties:
+        photo_id:
+          type: string
+          format: uuid
+          description: ID фотографии
+          nullable: true
+        title:
+          type: string
+          description: Название организации
+        description:
+          type: string
+          description: Подробное описание организации
+        phone:
+          type: string
+          format: phone
+          description: Контактный телефон
+          example: "+7-920-667-19-79"
+        email:
+          type: string
+          format: email
+          description: Электронная почта
+          example: org@example.com
+        latitude:
+          type: number
+          format: float
+          description: Географическая широта
+          example: 56.3269
+        longitude:
+          type: number
+          format: float
+          description: Географическая долгота
+          example: 44.0075
+      required:
+        - id
+        - photo_id
+        - title
+        - description
+        - phone
+        - email
+        - latitude
+        - longitude
+
+    OrganizationUpdate:
+      type: object
+      properties:
+        photo_id:
+          type: string
+          format: uuid
+          description: ID фотографии
+          nullable: true
+        title:
+          type: string
+          description: Название организации
+        description:
+          type: string
+          description: Подробное описание организации
+        phone:
+          type: string
+          format: phone
+          description: Контактный телефон
+          example: "+7-920-667-19-79"
+        email:
+          type: string
+          format: email
+          description: Электронная почта
+          example: org@example.com
+        latitude:
+          type: number
+          format: float
+          description: Географическая широта
+          example: 56.3269
+        longitude:
+          type: number
+          format: float
+          description: Географическая долгота
+          example: 44.0075
+      required:
+        - id
+        - photo_id
+        - title
+        - description
+        - phone
+        - email
+        - latitude
+        - longitude
+
+    ModerationReject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID организации
+        reason:
+          type: string
+          description: Причина отклонения
+          example: "Недостаточно информации для подтверждения."
+      required:
+        - reason
+        - id
+
+    ModerationApprove:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID организации
+      required:
+        - id
